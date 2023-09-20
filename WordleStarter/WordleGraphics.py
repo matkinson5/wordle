@@ -26,7 +26,7 @@ CANVAS_HEIGHT = 700		# Height of the tkinter canvas (pixels)
 
 SQUARE_SIZE = 60		# Size of each square (pixels)
 SQUARE_SEP = 5                  # Separation between squares (pixels)
-TOP_MARGIN = 30    		# Top margin (pixels)
+TOP_MARGIN = 60    		# Top margin (pixels)
 BOTTOM_MARGIN = 30    		# Bottom margin (pixels)
 MESSAGE_SEP = 20                # Space between board and message center
 
@@ -153,12 +153,22 @@ class WordleGWindow:
         root.title("Wordle")
         root.protocol("WM_DELETE_WINDOW", delete_window)
         self._root = root
+
         canvas = tkinter.Canvas(root,
                                 bg="White",
                                 width=CANVAS_WIDTH,
                                 height=CANVAS_HEIGHT,
                                 highlightthickness=0)
         canvas.pack()
+
+        
+        def changeColors(): # function that is used to toggle colorBlind mode
+            self._isColorBlind = not self._isColorBlind
+
+        self._isColorBlind = False
+        B = tkinter.Button(root, text = "Change Color Mode", command = changeColors)
+        B.place(relx = 1, x = -5, y = 5, anchor = tkinter.NE)
+
         self._canvas = canvas
         self._grid = create_grid()
         self._message = create_message()
@@ -170,6 +180,9 @@ class WordleGWindow:
         self._row = 0
         self._col = 0
         atexit.register(start_event_loop)
+
+    def get_color_mode(self):
+        return self._isColorBlind
 
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
