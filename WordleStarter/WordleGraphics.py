@@ -9,6 +9,7 @@ import atexit
 import math
 import time
 import tkinter
+import pyperclip
 
 # Constants
 
@@ -20,6 +21,10 @@ PRESENT_COLOR = "#CCBB66"       # Brownish yellow for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"           # Keys are colored light gray
+
+GREEN_BOX = "🟩"
+YELLOW_BOX = "🟨"
+GRAY_BOX = "⬜"
 
 CANVAS_WIDTH = 500		# Width of the tkinter canvas (pixels)
 CANVAS_HEIGHT = 700		# Height of the tkinter canvas (pixels)
@@ -180,6 +185,22 @@ class WordleGWindow:
         self._row = 0
         self._col = 0
         atexit.register(start_event_loop)
+
+        def share_results():
+           
+
+# Character you want to copy to the clipboard
+            character_to_copy = GREEN_BOX + "\n" + YELLOW_BOX
+
+# Copy the character to the clipboard
+            pyperclip.copy(character_to_copy)
+
+# You can also use pyperclip.paste() to retrieve the contents of the clipboard
+# copied_character = pyperclip.paste()
+
+            
+        share_button = tkinter.Button(root, text="Share", command=share_results)
+        share_button.place(relx = 1, x = -5, y = 5, anchor = tkinter.NE)
 
     def get_color_mode(self):
         return self._isColorBlind

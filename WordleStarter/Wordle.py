@@ -51,6 +51,8 @@ def wordle():
             return True
         else:
             return False
+        
+        
 
     def enter_action(s):
         
