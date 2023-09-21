@@ -69,6 +69,7 @@ def wordle():
                 message = currentRow
             elif won == True: 
                 message= "You won"
+                gw.enable_button()
             else:
                 message = "Try again tomorrow"
 

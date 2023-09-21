@@ -186,20 +186,30 @@ class WordleGWindow:
         self._col = 0
         atexit.register(start_event_loop)
 
-        def share_results():
+    def share_results(self):
+    #Format of results:
+    #Wordle [DATE] 4/6
+    #Emoji grid
+        results = ""
+
+        for row in range(N_ROWS):
+
+            for col in range(N_COLS):
+                if self.get_square_color(row, col) == CORRECT_COLOR:
+                    results += GREEN_BOX 
+                elif self.get_square_color(row, col) == PRESENT_COLOR:
+                    results += YELLOW_BOX
+                elif  self.get_square_color(row, col) == MISSING_COLOR:
+                    results += GRAY_BOX
+                if col == N_COLS-1:
+                    results += "\n"
+  
+        pyperclip.copy(results)
+
            
-
-# Character you want to copy to the clipboard
-            character_to_copy = GREEN_BOX + "\n" + YELLOW_BOX
-
-# Copy the character to the clipboard
-            pyperclip.copy(character_to_copy)
-
-# You can also use pyperclip.paste() to retrieve the contents of the clipboard
-# copied_character = pyperclip.paste()
-
-            
-        share_button = tkinter.Button(root, text="Share", command=share_results)
+    
+    def enable_button(self):
+        share_button = tkinter.Button(self._root, text="Share", command=self.share_results)
         share_button.place(relx = 1, x = -5, y = 5, anchor = tkinter.NE)
 
     def get_color_mode(self):
