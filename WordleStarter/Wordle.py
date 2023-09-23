@@ -166,7 +166,7 @@ def randomWord():
     random_integer = random.randint(min_value, max_value)
 
     word = words[random_integer]
-
+    print(word)
     return word
 
 # Startup code
