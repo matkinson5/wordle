@@ -9,7 +9,6 @@ import atexit
 import math
 import time
 import tkinter
-import pyperclip
 
 # Constants
 
@@ -21,10 +20,6 @@ PRESENT_COLOR = "#CCBB66"       # Brownish yellow for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"           # Keys are colored light gray
-
-GREEN_BOX = "🟩"
-YELLOW_BOX = "🟨"
-GRAY_BOX = "⬜"
 
 CANVAS_WIDTH = 500		# Width of the tkinter canvas (pixels)
 CANVAS_HEIGHT = 700		# Height of the tkinter canvas (pixels)
@@ -185,32 +180,6 @@ class WordleGWindow:
         self._row = 0
         self._col = 0
         atexit.register(start_event_loop)
-
-    def share_results(self):
-    #Format of results:
-    #Wordle [DATE] 4/6
-    #Emoji grid
-        results = ""
-
-        for row in range(N_ROWS):
-
-            for col in range(N_COLS):
-                if self.get_square_color(row, col) == CORRECT_COLOR:
-                    results += GREEN_BOX 
-                elif self.get_square_color(row, col) == PRESENT_COLOR:
-                    results += YELLOW_BOX
-                elif  self.get_square_color(row, col) == MISSING_COLOR:
-                    results += GRAY_BOX
-                if col == N_COLS-1:
-                    results += "\n"
-  
-        pyperclip.copy(results)
-
-           
-    
-    def enable_button(self):
-        share_button = tkinter.Button(self._root, text="Share", command=self.share_results)
-        share_button.place(relx = 1, x = -5, y = 5, anchor = tkinter.NE)
 
     def get_color_mode(self):
         return self._isColorBlind

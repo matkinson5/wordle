@@ -87,8 +87,6 @@ def wordle():
             return True
         else:
             return False
-        
-        
 
     # def choose_alternate_colors():
     #     while True:
@@ -115,8 +113,6 @@ def wordle():
                 message = "Keep going"
             elif won:
                 message = "You won"
-                gw.enable_button()
-
             else:
                 message = "Try again tomorrow"
 
