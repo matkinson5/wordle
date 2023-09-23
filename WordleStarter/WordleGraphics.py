@@ -9,7 +9,10 @@ import atexit
 import math
 import time
 import tkinter
+from datetime import date
 import pyperclip
+# run a "pip install pyperclip"
+
 
 # Constants
 
@@ -22,9 +25,9 @@ MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"           # Keys are colored light gray
 
-GREEN_BOX = "🟩"
-YELLOW_BOX = "🟨"
-GRAY_BOX = "⬜"
+GREEN_BOX = "🟩"        #Green box used to show correct squares in shared results
+YELLOW_BOX = "🟨"       #Yellow box used to show correct squares in shared results
+GRAY_BOX = "⬜"         #Gray box used to show correct squares in shared results
 
 CANVAS_WIDTH = 500		# Width of the tkinter canvas (pixels)
 CANVAS_HEIGHT = 700		# Height of the tkinter canvas (pixels)
@@ -170,8 +173,13 @@ class WordleGWindow:
         def changeColors(): # function that is used to toggle colorBlind mode
             self._isColorBlind = not self._isColorBlind
 
+            if self._isColorBlind:
+                B.configure(text = "Switch to Default")
+            else:
+                B.configure(text = "Switch to Color Blind")                        
+
         self._isColorBlind = False
-        B = tkinter.Button(root, text = "Change Color Mode", command = changeColors)
+        B = tkinter.Button(root, text = "Switch to Color Blind", command = changeColors)
         B.place(relx = 1, x = -5, y = 5, anchor = tkinter.NE)
 
         self._canvas = canvas
@@ -190,27 +198,31 @@ class WordleGWindow:
     #Format of results:
     #Wordle [DATE] 4/6
     #Emoji grid
-        results = ""
 
+        results = "Wordle - " + str(self.get_current_row() + 1) + "/" + str(N_ROWS) + "\n" + str(date.today()) + "\n"
+        # build the emoji grid to share
         for row in range(N_ROWS):
 
             for col in range(N_COLS):
-                if self.get_square_color(row, col) == CORRECT_COLOR:
+                squareColor = self.get_square_color(row, col)
+
+                if squareColor == CORRECT_COLOR or squareColor == "BLUE":
                     results += GREEN_BOX 
-                elif self.get_square_color(row, col) == PRESENT_COLOR:
+                elif squareColor == PRESENT_COLOR or squareColor == "ORANGE":
                     results += YELLOW_BOX
-                elif  self.get_square_color(row, col) == MISSING_COLOR:
+                elif  squareColor == MISSING_COLOR or squareColor == "RED":
                     results += GRAY_BOX
                 if col == N_COLS-1:
                     results += "\n"
   
         pyperclip.copy(results)
+        self.show_message("Copied Results to Clipboard")
 
            
     
     def enable_button(self):
         share_button = tkinter.Button(self._root, text="Share", command=self.share_results)
-        share_button.place(relx = 1, x = -5, y = 5, anchor = tkinter.NE)
+        share_button.place(x=5, y=5, anchor = tkinter.NW)
 
     def get_color_mode(self):
         return self._isColorBlind
