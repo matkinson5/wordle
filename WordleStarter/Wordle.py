@@ -9,7 +9,10 @@ from WordleDictionary import FIVE_LETTER_WORDS as words
 from WordleGraphics import WordleGWindow, N_COLS, CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR
 
 def wordle():
-    def change_color(enteredWord, word, square_colors, key_colors, is_color_blind):
+    def change_color(enteredWord, word):
+        is_color_blind = gw.get_color_mode()
+        square_colors, key_colors = set_color_squares(is_color_blind)
+
         rowNum = gw.get_current_row()
         word_dict = {}
 
@@ -45,10 +48,32 @@ def wordle():
             if enteredWord[i] == word[i]:
                 word_dict[word[i]] -= 1
 
-
-
-        print(word_dict)
-
+    def set_color_squares(is_color_blind):
+        if is_color_blind:
+            square_colors = {
+                "correct": "blue",
+                "present": "orange",
+                "missing": "red",
+                "unknown": UNKNOWN_COLOR,
+            }
+            key_colors = {
+                "correct": "blue",
+                "present": "orange",
+                "missing": "red",
+            }
+        else:
+            square_colors = {
+                "correct": CORRECT_COLOR,
+                "present": PRESENT_COLOR,
+                "missing": MISSING_COLOR,
+                "unknown": UNKNOWN_COLOR,
+            }
+            key_colors = {
+                "correct": CORRECT_COLOR,
+                "present": PRESENT_COLOR,
+                "missing": MISSING_COLOR,
+            }
+        return square_colors, key_colors
 
     def check_correct_letters(enteredWord, word): #checks if the word is the selected random word
         if enteredWord == word:
@@ -63,23 +88,24 @@ def wordle():
         else:
             return False
 
-    def choose_alternate_colors():
-        while True:
-            user_choice = input("Do you want to use the alternate color scheme? (yes/no): ").strip().lower()
-            if user_choice == "yes":
-                return True
-            elif user_choice == "no":
-                return False
-            else:
-                print("Invalid input. Please enter 'yes' or 'no'.") 
+    # def choose_alternate_colors():
+    #     while True:
+    #         user_choice = input("Do you want to use the alternate color scheme? (yes/no): ").strip().lower()
+    #         if user_choice == "yes":
+    #             return True
+    #         elif user_choice == "no":
+    #             return False
+    #         else:
+    #             print("Invalid input. Please enter 'yes' or 'no'.") 
 
     def enter_action(s):
         enteredWord = s.lower()
 
         if check_word(enteredWord):
             won = check_correct_letters(enteredWord, word)
-            print(word)
-            change_color(enteredWord, word, square_colors, key_colors, use_alternate_colors)
+            # print(word)
+            # change_color(enteredWord, word, square_colors, key_colors, use_alternate_colors)
+            change_color(enteredWord, word)
             currentRow = gw.get_current_row()
 
             if currentRow < 5 and not won:
@@ -96,32 +122,32 @@ def wordle():
         gw.show_message(message)
 
     # Call the function from WordleGraphics.py to choose the color scheme
-    use_alternate_colors = choose_alternate_colors()
+    # use_alternate_colors = choose_alternate_colors()
 
-    if use_alternate_colors:
-        square_colors = {
-            "correct": "blue",
-            "present": "orange",
-            "missing": "red",
-            "unknown": UNKNOWN_COLOR,
-        }
-        key_colors = {
-            "correct": "blue",
-            "present": "orange",
-            "missing": "red",
-        }
-    else:
-        square_colors = {
-            "correct": CORRECT_COLOR,
-            "present": PRESENT_COLOR,
-            "missing": MISSING_COLOR,
-            "unknown": UNKNOWN_COLOR,
-        }
-        key_colors = {
-            "correct": CORRECT_COLOR,
-            "present": PRESENT_COLOR,
-            "missing": MISSING_COLOR,
-        }
+    # if use_alternate_colors:
+    #     square_colors = {
+    #         "correct": "blue",
+    #         "present": "orange",
+    #         "missing": "red",
+    #         "unknown": UNKNOWN_COLOR,
+    #     }
+    #     key_colors = {
+    #         "correct": "blue",
+    #         "present": "orange",
+    #         "missing": "red",
+    #     }
+    # else:
+    #     square_colors = {
+    #         "correct": CORRECT_COLOR,
+    #         "present": PRESENT_COLOR,
+    #         "missing": MISSING_COLOR,
+    #         "unknown": UNKNOWN_COLOR,
+    #     }
+    #     key_colors = {
+    #         "correct": CORRECT_COLOR,
+    #         "present": PRESENT_COLOR,
+    #         "missing": MISSING_COLOR,
+    #     }
 
     gw = WordleGWindow()
 
