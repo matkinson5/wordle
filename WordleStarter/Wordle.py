@@ -169,7 +169,6 @@ def randomWord():
 
     # not necessarily needed but good for testing
     print(word)
-
     return word
 
 # Startup code
