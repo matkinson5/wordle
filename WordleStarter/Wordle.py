@@ -105,7 +105,6 @@ def wordle():
 
         if check_word(enteredWord):
             won = check_correct_letters(enteredWord, word)
-            # print(word)
             # change_color(enteredWord, word, square_colors, key_colors, use_alternate_colors)
             change_color(enteredWord, word)
             currentRow = gw.get_current_row()
@@ -125,6 +124,7 @@ def wordle():
 
         gw.show_message(message)
 
+    # I moved this code so that it worked with the button
     # Call the function from WordleGraphics.py to choose the color scheme
     # use_alternate_colors = choose_alternate_colors()
 
@@ -166,6 +166,8 @@ def randomWord():
     random_integer = random.randint(min_value, max_value)
 
     word = words[random_integer]
+
+    # not necessarily needed but good for testing
     print(word)
     return word
 
