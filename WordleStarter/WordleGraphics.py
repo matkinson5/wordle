@@ -175,8 +175,10 @@ class WordleGWindow:
 
             if self._isColorBlind:
                 B.configure(text = "Switch to Default")
+                canvas.configure(bg="gray")
             else:
-                B.configure(text = "Switch to Color Blind")                        
+                B.configure(text = "Switch to Color Blind") 
+                canvas.configure(bg="white")                        
 
         self._isColorBlind = False
         B = tkinter.Button(root, text = "Switch to Color Blind", command = changeColors)
