@@ -23,43 +23,43 @@ def wordle():
             else:
                 word_dict[word[i]] = 1
 
+        # all of the greens must be compared first, not letter by letter with yellows
         for i in range(N_COLS):
             if enteredWord[i] == word[i]:
                 square_color = square_colors["correct"]
-            else:
+                gw.set_square_color(rowNum, i, square_color)
+                gw.set_key_color(enteredWord[i].upper(), square_color)
+                # if correct then take letter out of dictionary
+                word_dict[enteredWord[i]] -= 1
+
+        for i in range(N_COLS):
+            # if the color isn't already set to "correct" then make it either yellow or gray
+            if gw.get_square_color(rowNum, i) != square_colors["correct"]:
                 if enteredWord[i] in word_dict and word_dict[enteredWord[i]] > 0:
                     square_color = square_colors["present"]
                 else:
                     square_color = square_colors["missing"]
+                
+                gw.set_square_color(rowNum, i, square_color)
+                if gw.get_key_color(enteredWord[i].upper()) == square_colors["missing"] or gw.get_key_color(enteredWord[i].upper()) == square_colors["unknown"]:
+                    gw.set_key_color(enteredWord[i].upper(), square_color)
 
-            if is_color_blind:
-                key_color = key_colors["correct"] if enteredWord[i] == word[i] else (
-                    key_colors["present"] if enteredWord[i] in word_dict and word_dict[enteredWord[i]] > 0 else key_colors["missing"])
-                key_color = "blue" if key_color == key_colors["correct"] else (
-                    "orange" if key_color == key_colors["present"] else "red")
-            else:
-                key_color = key_colors["correct"] if enteredWord[i] == word[i] else (
-                    key_colors["present"] if enteredWord[i] in word_dict and word_dict[enteredWord[i]] > 0 else key_colors["missing"])
-
-            gw.set_square_color(rowNum, i, square_color)
-            gw.set_key_color(enteredWord[i].upper(), key_color)
-
-            # Decrement the count for the letter in the dictionary
-            if enteredWord[i] == word[i]:
-                word_dict[word[i]] -= 1
+            # Decrement the count if the letter appears in the dictionary (for yellows only)
+            if enteredWord[i] in word and word_dict[enteredWord[i]] > 0:
+                word_dict[enteredWord[i]] -= 1
 
     def set_color_squares(is_color_blind):
         if is_color_blind:
             square_colors = {
-                "correct": "blue",
-                "present": "orange",
-                "missing": "red",
+                "correct": "BLUE",
+                "present": "ORANGE",
+                "missing": "RED",
                 "unknown": UNKNOWN_COLOR,
             }
             key_colors = {
-                "correct": "blue",
-                "present": "orange",
-                "missing": "red",
+                "correct": "BLUE",
+                "present": "ORANGE",
+                "missing": "RED",
             }
         else:
             square_colors = {
